@@ -42,6 +42,10 @@ from .union import Union
 from .utils import get_field_as
 
 
+def types_equal(t1, t2):
+    return type(t1) is type(t2)
+
+
 def is_graphene_type(_type):
     if isinstance(_type, (List, NonNull)):
         return True
@@ -94,7 +98,7 @@ class TypeMap(GraphQLTypeMap):
         if type._meta.name in map:
             _type = map[type._meta.name]
             if isinstance(_type, GrapheneGraphQLType):
-                assert _type.graphene_type == type, (
+                assert types_equal(_type.graphene_type, type), (
                     "Found different types with the same name in the schema: {}, {}."
                 ).format(_type.graphene_type, type)
             return map
